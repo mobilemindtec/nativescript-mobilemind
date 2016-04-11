@@ -19,6 +19,8 @@ exports.pushSign = function(args){
 
   var url = args.url || pushRegisterUrl
 
+  console.log("### push register url = " + url + " - " + JSON.stringify(args.data))
+
   fetch(url, {
     method: "POST",
     headers: {
