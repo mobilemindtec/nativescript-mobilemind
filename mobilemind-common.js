@@ -37,11 +37,11 @@ exports.pushSign = function(args){
     if(!response.ok){          
       console.log('### error on resgister push device: ' + JSON.stringify(response))
       if(args.errorCallback)
-        args.errorCallback()
+        args.errorCallback(response)
     }else{
       console.log("### register push device success!")
       if(args.successCallback)
-        args.successCallback()
+        args.successCallback(response)
     }
 
   })  
@@ -76,11 +76,11 @@ exports.sendEmail = function(args){
       console.log("## response=" + JSON.stringify(response))
       
       if(args.errorCallback)
-        args.errorCallback()
+        args.errorCallback(response)
 
     }else{
       if(args.successCallback)
-        args.successCallback()
+        args.successCallback(response)
     }
   })  
 
