@@ -68,17 +68,19 @@ exports.sendEmail = function(args){
     },
     body: JSON.stringify(args.data)
   })
-  .then(function(){
+  .then(function(response){
 
     console.log('call send email')
 
     if(!response.ok){
       console.log("## response=" + JSON.stringify(response))
       
+      console.log("sendEmail.errorCallback")
       if(args.errorCallback)
         args.errorCallback(response)
 
     }else{
+      console.log("sendEmail.successCallback")
       if(args.successCallback)
         args.successCallback(response)
     }
