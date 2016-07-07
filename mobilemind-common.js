@@ -28,7 +28,7 @@ exports.pushSign = function(args){
       'Content-Type': 'application/json'
     },      
     timeout: 20 * 1000, // 20 seg
-    body: JSON.stringify(data),
+    body: JSON.stringify(args.data),
 
   }).then(function(response){
 
