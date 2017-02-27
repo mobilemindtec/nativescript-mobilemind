@@ -69,6 +69,13 @@ exports.pushSign = function(args){
 */
 exports.sendEmail = function(args){
 
+  if(args.debug){
+
+    console.log("send email to " + mailServerUrl)
+    console.log("send email content " + JSON.stringify(args))
+
+  }
+
   httpRequest({
     url: mailServerUrl,
     method: "POST",
@@ -80,7 +87,10 @@ exports.sendEmail = function(args){
   })
   .then(function(response){
 
-    console.log('call send email')
+    if(args.debug){
+      console.log('call send email statusCode = ' + response.statusCode)
+      console.log('call send email content = ' + response.content)
+    }
 
     if(!response.statusCode != 200){
       console.log("## response=" + JSON.stringify(response))
