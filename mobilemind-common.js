@@ -1,4 +1,5 @@
 
+var httpRequest = require("http/http-request")
 
 var pushRegisterUrl = 'http://push.mobilemind.com.br/apps/register'
 var mailServerUrl = 'http://www.mobilemind.com.br/mailServer/sendEmail'
@@ -19,23 +20,27 @@ exports.pushSign = function(args){
 
   var url = args.url || pushRegisterUrl
 
-  console.log("### push register url = " + url + " - " + JSON.stringify(args.data))
+  if(args.debug)
+    console.log("### push register url = " + url + " - " + JSON.stringify(args.data))
 
-  fetch(url, {
-    method: "POST",
+  httpRequest.request({ 
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json'
     },      
-    timeout: 20 * 1000, // 20 seg
-    body: JSON.stringify(args.data),
-
+    url: args.url,
+    method: 'POST',
+    timeout: 20 * 1000,      
+    content: JSON.stringify(args.data)
   }).then(function(response){
 
-    console.log("##### register push called")
+    if(args.debug){
+      console.log("## register push statusCode=" + response.statusCode)
+      console.log("## register push content=" + response.content)
+    }
 
-    if(!response.ok){          
-      console.log('### error on resgister push device: ' + JSON.stringify(response))
+    if(response.statusCode != 200){          
+      console.log('### error on register push device: ')
       if(args.errorCallback)
         args.errorCallback(response)
     }else{
@@ -44,6 +49,10 @@ exports.pushSign = function(args){
         args.successCallback(response)
     }
 
+  }).catch(function(error){
+    console.log("### push register error " + error)
+    if(args.errorCallback)
+      args.errorCallback(error)
   })  
 }
 
@@ -60,19 +69,20 @@ exports.pushSign = function(args){
 */
 exports.sendEmail = function(args){
 
-  fetch(mailServerUrl, {
+  httpRequest({
+    url: mailServerUrl,
     method: "POST",
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify(args.data)
+    content: JSON.stringify(args.data)
   })
   .then(function(response){
 
     console.log('call send email')
 
-    if(!response.ok){
+    if(!response.statusCode != 200){
       console.log("## response=" + JSON.stringify(response))
       
       console.log("sendEmail.errorCallback")
@@ -84,6 +94,10 @@ exports.sendEmail = function(args){
       if(args.successCallback)
         args.successCallback(response)
     }
+  }).catch(function(error){
+    console.log("### send error " + error)
+    if(args.errorCallback)
+      args.errorCallback(error)
   })  
 
 
