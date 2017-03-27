@@ -1,6 +1,7 @@
 
 var httpRequest = require("http/http-request")
 
+var application = require('application')
 var pushRegisterUrl = 'http://push.mobilemind.com.br/apps/register'
 var mailServerUrl = 'http://www.mobilemind.com.br/mailServer/sendEmail'
 // args = {url:, data: , errorCallback, successCallback}
@@ -72,17 +73,18 @@ exports.sendEmail = function(args){
   if(args.debug){
 
     console.log("send email to " + mailServerUrl)
-    console.log("send email content " + JSON.stringify(args))
+    //console.log("send email content " + JSON.stringify(args.data))
 
   }
 
-  httpRequest({
+  httpRequest.request({
     url: mailServerUrl,
     method: "POST",
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json'
     },
+    timeout: 5 * 1000,
     content: JSON.stringify(args.data)
   })
   .then(function(response){
@@ -104,11 +106,20 @@ exports.sendEmail = function(args){
       if(args.successCallback)
         args.successCallback(response)
     }
-  }).catch(function(error){
+  }, function(error){
     console.log("### send error " + error)
     if(args.errorCallback)
       args.errorCallback(error)
   })  
+
+  if(args.sleep){
+    if(application.android){
+      java.lang.Thread.sleep(2000)
+    }else{
+      NSThread.sleepForTimeInterval(0.2)
+    }
+  }
+
 
 
 }
