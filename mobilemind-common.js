@@ -94,7 +94,7 @@ exports.sendEmail = function(args){
       console.log('call send email content = ' + response.content)
     }
 
-    if(!response.statusCode != 200){
+    if(response.statusCode != 200){
       console.log("## response=" + JSON.stringify(response))
       
       console.log("sendEmail.errorCallback")
