@@ -1,3 +1,2 @@
-var common = require('./mobilemind-common')
+export * from './mobilemind-common'
 
-global.moduleMerge(common, exports);

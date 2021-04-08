@@ -1,7 +1,7 @@
 
-var httpRequest = require("http/http-request")
+var httpRequest = require("@nativescript/core/http/http-request")
 
-var application = require('application')
+var application = require('@nativescript/core/application')
 var pushRegisterUrl = 'http://push.mobilemind.com.br/apps/register'
 var mailServerUrl = 'http://www.mobilemind.com.br/mailServer/sendEmail'
 // args = {url:, data: , errorCallback, successCallback}
